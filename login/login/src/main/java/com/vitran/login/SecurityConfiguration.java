@@ -15,12 +15,12 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 //remove the formLogin, which asks Spring to form the login form
-                .formLogin(form -> form
+                /*.formLogin(form -> form
                         .loginPage("/saml_login") // Use a different URL for login page
                         .loginProcessingUrl("/saml_login_handler") // URL to submit the login form
                         .permitAll()
                         .defaultSuccessUrl("/home", true)
-                )
+                )*/
                 .csrf().disable(); // For simplicity during testing
 
         ;
