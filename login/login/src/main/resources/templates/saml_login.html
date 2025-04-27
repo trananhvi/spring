@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Optional: Link to your CSS file -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <div class="login-container">
     <h2>Login</h2>
-    <form action="/login" method="post">
+    <form th:action="@{/saml_login_handler}" method="post">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
