@@ -11,8 +11,15 @@ public class SecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/saml_login", "/saml_login_handler").permitAll()
+                        .requestMatchers("/saml_login",
+                                "/saml_login_handler",
+                                "/saml2/authenticate/*"
+                        ).permitAll()
                         .anyRequest().authenticated()
+                )
+                .saml2Login(login -> login
+                        .loginPage("/saml_login")
+                        .defaultSuccessUrl("/home", true)
                 )
                 //remove the formLogin, which asks Spring to form the login form
                 /*.formLogin(form -> form
