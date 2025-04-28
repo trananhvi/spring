@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import java.nio.charset.StandardCharsets;
 
-@RestController
+@Controller
 public class SamlLoginHandlerController {
 
     private static final Logger log = LoggerFactory.getLogger(SamlLoginHandlerController.class);
