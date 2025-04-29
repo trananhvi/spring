@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .saml2Login(login -> login
+                        .loginPage("/saml_login")
                         .authenticationRequestResolver(authenticationRequestResolver(relyingPartyRegistrationRepository))
                         .defaultSuccessUrl("/home", true)
                 )
