@@ -1,8 +1,10 @@
 package example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml2.provider.service.metadata.OpenSamlMetadataResolver;
@@ -14,18 +16,15 @@ import org.springframework.security.saml2.provider.service.web.Saml2MetadataFilt
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-    @Override
+        @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        // This will enable the m
+        // This will enable the metadata endpoint
         Converter<HttpServletRequest, RelyingPartyRegistration> relyingPartyRegistrationResolver =
                 new DefaultRelyingPartyRegistrationResolver(this.relyingPartyRegistrationRepository);
 
@@ -33,10 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 relyingPartyRegistrationResolver,
                 new OpenSamlMetadataResolver());
 
-        http
-            .saml2Login(withDefaults())
-            .addFilterBefore(filter, Saml2WebSsoAuthenticationFilter.class)
-                .antMatcher("/**")
+        // Add the filter before the SAML filter
+        http.addFilterBefore(filter, Saml2WebSsoAuthenticationFilter.class);
+
+        // Configure SAML2 login with our custom factory
+        http.saml2Login(Customizer.withDefaults());
+
+        // Configure authorization
+        http.antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/**").authenticated();
     }
