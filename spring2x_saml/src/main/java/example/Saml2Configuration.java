@@ -18,9 +18,9 @@ public class Saml2Configuration {
      * Create our custom SAML authentication request factory as the primary bean
      * This will be used instead of the default OpenSamlAuthenticationRequestFactory
      */
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(Saml2AuthenticationRequestFactory.class)
+    //@Bean
+    //@Primary
+    //@ConditionalOnMissingBean(Saml2AuthenticationRequestFactory.class)
     public Saml2AuthenticationRequestFactory saml2AuthenticationRequestFactory() {
         return new OktaLoginHintAuthenticationRequestFactory();
     }

@@ -22,15 +22,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-        @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // This will enable the metadata endpoint
-        Converter<HttpServletRequest, RelyingPartyRegistration> relyingPartyRegistrationResolver =
-                new DefaultRelyingPartyRegistrationResolver(this.relyingPartyRegistrationRepository);
+        Converter<HttpServletRequest, RelyingPartyRegistration> relyingPartyRegistrationResolver = new DefaultRelyingPartyRegistrationResolver(this.relyingPartyRegistrationRepository);
 
-        Saml2MetadataFilter filter = new Saml2MetadataFilter(
-                relyingPartyRegistrationResolver,
-                new OpenSamlMetadataResolver());
+        Saml2MetadataFilter filter = new Saml2MetadataFilter(relyingPartyRegistrationResolver, new OpenSamlMetadataResolver());
 
         // Add the filter before the SAML filter
         http.addFilterBefore(filter, Saml2WebSsoAuthenticationFilter.class);
